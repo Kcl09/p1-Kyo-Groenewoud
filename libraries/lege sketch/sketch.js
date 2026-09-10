@@ -3,20 +3,19 @@ function setup() {
 
 }
 
+let rij1=(10)
+let rij2=(1,1,1,1,1,1,0,0,0,0)
+
+let x=(10)
+let Y=(10)
+
 function draw() {
   background(220);
-noStroke();
-fill(150);
-rect(50,50,50,180);
-rect(63,230,25,40);
-
-fill(255,0,0);
-circle(75,75,40);
-
-fill(255,190,0);
-circle(75,130,40);
-
-fill(0,255,0);
-circle(75,185,40);
+if (rij1 < 1) {
+circle(x,Y,10);
 }
+else{text ("onvoldoende",100,100)}
+}
+
+
 
