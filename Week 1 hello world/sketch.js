@@ -256,6 +256,7 @@ rect(520,370,10,20);
 fill(0)
 text("logo",150,650)
 text("doos",200,450)
+text("pilot jack cooper",600,600)
   // Style the text.
   textAlign(CENTER);
   textSize(16);
@@ -401,12 +402,12 @@ let rijen1 = [
     [183,240,255]
   ];
  
-  let x1 = 50;
-  let y1 = 1200;
+  let x1 = 1000;
+  let y1 = 600;
  
  
-x1 = 50;
-y1 = 1200;
+x1 = 1000;
+y1 = 600;
  
 for (let rij1 of rijen1) {
  
@@ -421,7 +422,7 @@ for (let rij1 of rijen1) {
     x1 += 15;
   }
  
-  x1 = 50;
+  x1 = 350;
   y1 += 15;
 }
 
