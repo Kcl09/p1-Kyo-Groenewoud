@@ -3,19 +3,34 @@ function setup() {
 
 }
 
-let rij1=(10)
-let rij2=(1,1,1,1,1,1,0,0,0,0)
-
-let x=(10)
-let Y=(10)
+let x=10
+let y=10
+let variabelMovement2=1
+let variabelMovement=1
 
 function draw() {
   background(220);
-if (rij1 < 1) {
-circle(x,Y,10);
+text("positie"+x,150,50)
+text("positie"+y,150,100)
+
+circle(x,y,10);
+
+ x=x+variabelMovement
+y=y+variabelMovement2
+
+ if (x>=100){
+  variabelMovement-=1
+  }
+ if (x<=0){variabelMovement+=1}
+
+  y=y+variabelMovement2
+
+ if (y>=100){
+  variabelMovement2-=1
+  }
+ if (y<=0){variabelMovement2+=1}
 }
-else{text ("onvoldoende",100,100)}
-}
+
 
 
 

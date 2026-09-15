@@ -1,6 +1,11 @@
 function setup() {
   createCanvas(800, 600);
 }
+let zonXAs=-50
+let zonBeweging=+1
+
+let wolkXAs=800
+let wolkBeweging=-1
 
 function draw() {
   background(173,216,230);
@@ -11,6 +16,13 @@ fill(0)
   // Display the mouse's coordinates.
   text(`x: ${int(mouseX)} y: ${int(mouseY)}`, 400, 20);
 
+  
+//zon en de beweging van de zon
+fill(255,255,0)
+circle(zonXAs,50,50)
+zonXAs=zonXAs+zonBeweging
+if (zonXAs>=900){zonXAs=-0}
+
 
   //de achtergrond en weg
   
@@ -18,6 +30,9 @@ fill(0)
   noStroke();
   
   quad(450,80,400,80,5,600,800,600);
+  fill(140);
+  quad(0,600,165,225,400,600);
+  quad(500,600,620,190,1000,600);
 
   fill(0,255,0);
 rect(0,450,800);
@@ -55,12 +70,15 @@ fill(0,255,0)
 circle(645,410,20)
 
 //wolk
-fill(255)
-circle(75,110,50)
-circle(100,100,60)
-circle(120,110,50)
+fill(230)
+circle(75+wolkXAs,100,50)
+circle(100+wolkXAs,90,60)
+circle(120+wolkXAs,100,50)
 
-//zon
-fill(150,150,0)
-circle(50,50,50)
+fill(255)
+circle(75+wolkXAs,110,50)
+circle(100+wolkXAs,100,60)
+circle(120+wolkXAs,110,50)
+wolkXAs=wolkXAs+wolkBeweging
+
 }
