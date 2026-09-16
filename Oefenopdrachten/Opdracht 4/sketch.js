@@ -8,6 +8,12 @@ let rood
 let geel
 let groen
 let stoplichtStatus=1
+
+let wUp=0
+let dRechts=0
+let sDown=0
+let aLinks=0
+
 //opdracht1
 function draw() {
   background(220);
@@ -62,12 +68,56 @@ fill(groen)
 circle(45,230,20)
 
 //opdracht4
-circle(600,100,100)
+push()
+circle(600+dRechts+aLinks,100+wUp+sDown,100)
 fill(255)
-circle(600,100,80)
+circle(600+dRechts+aLinks,100+wUp+sDown,80)
 fill(0)
 textSize(60)
-text("8",585,120)
+text("8",585+dRechts+aLinks,120+wUp+sDown)
+
+if(keyIsPressed===true){
+  if(keyCode===87+keyCode===38){
+    wUp=wUp-1
+  }
+}
+if(keyIsPressed===true){
+  if(keyCode===83){
+    sDown=sDown+1
+  }
+}
+if(keyIsPressed===true){
+  if(keyCode===68){
+    dRechts=dRechts+1
+  }
+}
+if(keyIsPressed===true){
+  if(keyCode===65){
+    aLinks=aLinks-1
+  }
+}
+if(keyIsPressed===true){
+  if(keyCode===38){
+    wUp=wUp-1
+  }
+}
+if(keyIsPressed===true){
+  if(keyCode===40){
+    sDown=sDown+1
+  }
+}
+if(keyIsPressed===true){
+  if(keyCode===39){
+    dRechts=dRechts+1
+  }
+}
+if(keyIsPressed===true){
+  if(keyCode===37){
+    aLinks=aLinks-1
+  }
+}
+//ik heb later gezien dat het makelijker kan maar het werkt dus ik vind het goed.
+pop()
 
 }
 //elke keer als enter wordt gebruikt word er +1 gedaan bij stoplicht status en het kan niet over 3 gaan

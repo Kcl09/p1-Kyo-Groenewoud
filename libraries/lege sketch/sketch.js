@@ -67,20 +67,35 @@ fill(groen);
 circle(45,230,20);
 
 text("hallo",10,400)
+text(wUp,100,10)
 push()
-circle(600,100+wUp,100)
+circle(600+dRechts+aLinks,100+wUp+sDown,100)
 fill(255)
-circle(600,100,80)
+circle(600+dRechts+aLinks,100+wUp+sDown,80)
 fill(0)
 textSize(60)
-text("8",585,120)
+text("8",585+dRechts+aLinks,120+wUp+sDown)
 
 if(keyIsPressed===true){
   if(keyCode===87){
-    wUp=-1
+    wUp=wUp-1
   }
 }
-
+if(keyIsPressed===true){
+  if(keyCode===83){
+    sDown=sDown+1
+  }
+}
+if(keyIsPressed===true){
+  if(keyCode===68){
+    dRechts=dRechts+1
+  }
+}
+if(keyIsPressed===true){
+  if(keyCode===65){
+    aLinks=aLinks-1
+  }
+}
 pop()
 
 
