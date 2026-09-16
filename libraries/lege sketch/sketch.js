@@ -17,8 +17,8 @@ let aLinks=0
 
 function draw() {
   background(220);
-text("positie"+x,150,50)
-text("positie"+y,150,100)
+text("positie:x"+x,150,50)
+text("positie:y"+y,150,100)
 
 circle(x,y,10);
 
@@ -97,8 +97,11 @@ if(keyIsPressed===true){
   }
 }
 pop()
-
-
+push()
+noStroke()
+fill(0,0,255)
+rect(100,100,100,50)
+pop()
 }
 
 
