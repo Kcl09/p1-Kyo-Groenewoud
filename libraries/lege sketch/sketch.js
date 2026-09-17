@@ -15,6 +15,9 @@ let dRechts=0
 let sDown=0
 let aLinks=0
 
+let c=0
+let circleMovement=+1
+
 function draw() {
   background(220);
 text("positie:x"+x,150,50)
@@ -102,6 +105,30 @@ noStroke()
 fill(0,0,255)
 rect(100,100,100,50)
 pop()
+
+push()
+
+
+
+c=c+circleMovement
+fill(69, 75, 55)
+rect(94,367,20,100);
+rect(294,365,20,100);
+rect(694,357,20,100);
+fill(0,100,0)
+
+circle(102+c,372,50);
+
+if (c>=4){
+  c=c-3
+}
+
+circle(302,372,50);
+circle(702,372,50);
+
+
+pop()
+
 }
 
 
