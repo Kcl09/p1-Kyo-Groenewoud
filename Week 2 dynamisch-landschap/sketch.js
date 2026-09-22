@@ -192,4 +192,3 @@ if(stoplichtStatus>3){
   stoplichtStatus-=3
 }
 }
-

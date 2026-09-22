@@ -1,6 +1,7 @@
 function setup() {
   createCanvas(800, 800);
-
+let a=random(100)
+let b=random(100)
 }
 
 let x=10
@@ -17,6 +18,8 @@ let aLinks=0
 
 let c=0
 let circleMovement=+1
+
+
 
 function draw() {
   background(220);
@@ -141,7 +144,15 @@ function keyReleased(){
 if(stoplichtStatus>3){
   stoplichtStatus-=3
 }
+text(a,200,200)
+
+if (a>=b){
+  text("a is groter dan b",500,100)
 }
+  
+}
+
+
 
 
 
