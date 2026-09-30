@@ -1,38 +1,31 @@
 function setup() {
   createCanvas(400, 400);
 
-
-  //  starter voorwaarden  updater
-  for(let i = 0; i <= 100; i++){
-    console.log(i)
-  }
-
-
 }
-
+let array = [
+['naam1','naam 2','naam3','naam4','naam5'],
+['naam6','naam 7','naam8','naam9','naam10'],
+['naam11','naam 12','naam13','naam14','naam15'],
+['naam16','naam 17','naam18','naam19','naam20'],
+['naam21','naam 22','naam23','naam24','naam25'],
+];
 
 function draw() {
   background(220);
-
-  for(let x = 0; x <= 2; x++){
-
-    circle(30,30 + (35 * x),30)
-    
-    if( x == 0){
-      fill("red")
-    }else if(x == 1){
-      fill("orange")
-    }else if(x == 2) {
-      fill("green")
-    }
+  let index = 0;
+for (let i = 0; i <  5;i++){
+  for (let j = 0; j < 5; j++){
+    // if(index % 2 ==0){
+    //   fill (255)
+    // } else{
+    //   fill(0)
+    // }
+    // rect(j * 50 + 25 ,i*50 + 25,50)
   
-  
+index++;
+fill(255,0,0);
+  text(array[i][j],50 * j + 25,35+50 *i)
   }
-  
-let index = 0;
-while (index < 5){
-  rect(50 + (index * 50),50,50,50);
-  index++
 }
 
-}
+ }
