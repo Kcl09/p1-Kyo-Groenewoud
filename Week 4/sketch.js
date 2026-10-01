@@ -92,8 +92,51 @@ if (keyIsDown(LEFT_ARROW) === true) {
   if (keyIsDown(189) === true) {
   size[i]-= 0.1;
   }
-  
+  // dit zorgt er voor dat je de rects en circles kan duwen met je muis
+    if (mouseX >= x[i] && mouseX <= x[i]+10
+    && mouseY >= y[i] && mouseY <= y[i]+20
+  ){
+    x[i] +=5
+  }
+   if (mouseX >= x[i]+10 && mouseX <= x[i]+20
+    && mouseY >= y[i] && mouseY <= y[i]+20
+  ){
+    x[i]-=5
+  }
+    if (mouseX >= x[i] && mouseX <= x[i]+20
+    && mouseY >= y[i] +10 && mouseY <= y[i]+20
+  ){
+    y[i]-=5
+  }
+      if (mouseX >= x[i] && mouseX <= x[i]+20
+    && mouseY >= y[i]  && mouseY <= y[i]+20
+  ){
+    y[i]+=5
+  }
+
+
+   if (mouseX >= xCircle[i] && mouseX <= xCircle[i]+10
+    && mouseY >= yCircle[i] && mouseY <= yCircle[i]+20
+  ){
+    xCircle[i] +=5
+  }
+   if (mouseX >= xCircle[i]+10 && mouseX <= xCircle[i]+20
+    && mouseY >= yCircle[i] && mouseY <= yCircle[i]+20
+  ){
+    xCircle[i]-=5
+  }
+    if (mouseX >= xCircle[i] && mouseX <= xCircle[i]+20
+    && mouseY >= yCircle[i] +10 && mouseY <= yCircle[i]+20
+  ){
+    yCircle[i]-=5
+  }
+      if (mouseX >= xCircle[i] && mouseX <= xCircle[i]+20
+    && mouseY >= yCircle[i]  && mouseY <= yCircle[i]+20
+  ){
+    yCircle[i]+=5
+  }
 }
+
 }
 //dit is om de kleuren te randomisen met back space
 function keyPressed(){
