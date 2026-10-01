@@ -4,13 +4,23 @@ let xCircle = [];
 let yCircle =[];
 
 let size =[];
-let xSpeed = 0
-let yspeed = 0
 
 let r =[];
 let g =[];
 let b =[];
 let t =[];
+
+let xSave = [];
+let ySave =[];
+let xCircleSave = [];
+let yCircleSave =[];
+
+let sizeSave =[];
+
+let rSave =[];
+let gSave =[];
+let bSave =[];
+let tSave =[];
 // dit is er voor de start up 
 // dit zorgt er voor dat de x y coordinaten random zijn
 // en dat de kleur en transparantie verandert in 
@@ -28,6 +38,8 @@ function setup() {
   g.push(int(random(0,255)))
   b.push(int(random(0,255)))
   t.push(int(random(200,255)))
+
+  
   }
 }
 
@@ -92,6 +104,10 @@ if (keyIsDown(LEFT_ARROW) === true) {
   if (keyIsDown(189) === true) {
   size[i]-= 0.1;
   }
+  
+
+
+
   // dit zorgt er voor dat je de rects en circles kan duwen met je muis
     if (mouseX >= x[i] && mouseX <= x[i]+10
     && mouseY >= y[i] && mouseY <= y[i]+20
@@ -135,6 +151,7 @@ if (keyIsDown(LEFT_ARROW) === true) {
   ){
     yCircle[i]+=5
   }
+  
 }
 
 }
@@ -152,7 +169,49 @@ function keyPressed(){
   t.push(int(random(200,255)))
   
   }
+  if (keyCode === 82){
+x = [];
+y =[];
+xCircle = [];
+yCircle =[];
+
+size =[];
+r =[];
+g =[];
+b =[];
+t =[];
+
+
   }
- 
+  }
+  if (keyCode === 83){
+  xSave = x;
+  ySave = y;
+  xCircleSave = xCircle;
+  yCircleSave = yCircle;
+
+  sizeSave = size;
+
+
+  rSave = r;
+  gSave = g;
+  bSave = b;
+  tSave = t;
+  console.log("huh")
+  }
+ if(keyCode === 76){
+x = xSave;
+y =ySave;
+xCircle =xCircleSave ;
+yCircle =yCircleSave ;
+
+size =sizeSave;
+
+r = rSave;
+g =gSave;
+b =bSave;
+t =tSave;
+console.log("werkt")
+ }
   
 }
