@@ -125,7 +125,7 @@ function doorklikkenfout(x, y, lengte, breedte) {
 }
 
 function draw() {
-  background(220);
+  background(220   );
 
 
   // voor start scherm
@@ -197,8 +197,35 @@ function draw() {
       text(vragen[vraagcount].antwoord, 460, 550)
     }
 
-
-
   }
+function mousePressed() {
+  if (vraagcount == 0) {
+    // Startknop geklikt?
+    if (isGeklikt(150, 300, 450, 200)) {
+      vraagcount++;
+      antwoordRandom = int(random(0, 4));
+    }
+  } else if (vraagcount < 11) {
+    // Controleer op welke van de 4 knoppen is geklikt
+    let knop0 = isGeklikt(50, 400, 300, 75);
+    let knop1 = isGeklikt(50, 500, 300, 75);
+    let knop2 = isGeklikt(450, 400, 300, 75);
+    let knop3 = isGeklikt(450, 500, 300, 75);
 
+    // Als er op een geldige knop is geklikt, ga naar de volgende vraag
+    if (knop0 || knop1 || knop2 || knop3) {
+      
+      // Controleer of de geklikte knop overeenkomt met de juiste antwoordpositie
+      if ((antwoordRandom == 0 && knop0) || 
+          (antwoordRandom == 1 && knop1) || 
+          (antwoordRandom == 2 && knop2) || 
+          (antwoordRandom == 3 && knop3)) {
+        score += 10; // Goed antwoord!
+      }
+
+      vraagcount++;
+      antwoordRandom = int(random(0, 4));
+    }
+  }
+}
 }

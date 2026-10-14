@@ -38,8 +38,8 @@ let box9_color=0;
 function draw() {
   background(achtergrondKleur);
 
-fill(37,40,38);
-rect(50,50,500,500,50);
+  fill(37,40,38);
+  rect(50,50,500,500,50);
 
 rect(600,100,30,10);
 fill(255)
@@ -471,9 +471,9 @@ if (huidigeSpeler===2&&mouseButton===LEFT
   huidigeSpeler+=1
 }
 //7
-if (huidigeSpeler===2&&mouseButton===LEFT
-&&mouseX > rectX1 && mouseX < rectX1 + rectW 
-&&mouseY > rectY3 && mouseY < rectY3 + rectW && box7 ==1) {
+if (huidigeSpeler===2 && mouseButton===LEFT
+&& mouseX > rectX1 && mouseX < rectX1 + rectW 
+&& mouseY > rectY3 && mouseY < rectY3 + rectW && box7 ==1) {
   box7 = 2
 
   huidigeSpeler+=1;
