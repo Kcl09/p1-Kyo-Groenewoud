@@ -129,11 +129,5 @@ function draw() {
     knoppen[5].hide();
   }
 
-
-  // if (fotoValue !== 0) {
-  //   loadImage[0].hide();
-  // } else {
-  //   knoppen[0].show();
-  // }
   
 }
