@@ -6,7 +6,7 @@ let breedte = [
 ];
 let x = 50;
 let y = 400;
-let geld = 0;  
+let geld = 0;
 let leven = 0;
 let foto = [
   { fish: 0 },
@@ -17,20 +17,16 @@ let foto = [
   { slaapkamer: 0 },
 ]
 let laatRectZien = 0;
-let knopAan;
-let knopUit;
 let kamerFunctie = [woonkamer, winkel, badkamer, minigame1, slaapkamer];
 let kamers = ["woonkamer", "winkel", "badkamer", "minigame1", "slaapkamer"]
 let kamerKnop = [];
 let scene = 0;
-
-
 let xMinigame = 0;
 let yMinigame = 0;
 let xRandom = [];
 let yRandom = [];
 let startGame = 0;
-
+let slapen = 0;
 function preload() {
   foto[0].fish = loadImage("fishwithshoes.png");
   foto[1].fishandchips = loadImage("fishandchips.png")
@@ -59,11 +55,20 @@ function setup() {
 
   startKnop = createButton("start");
   startKnop.mousePressed(start);
-  startKnop.position(557,430)
+  startKnop.position(557, 430)
   startKnop.hide();
 
   slaapknop = createButton("slaap");
   slaapknop.mousePressed(slaap);
+  slaapknop.hide();
+  slaapknop.style("font-size", "40px")
+  slaapknop.position(357, 500)
+
+  wakkerknop = createButton("wakker");
+  wakkerknop.mousePressed(wakker);
+  wakkerknop.style("font-size", "40px")
+  wakkerknop.position(357, 500)
+  wakkerknop.hide();
   for (let i = 0; i < 5; i++) {
     let selectieKnop = createButton(kamers[i])
     selectieKnop.position(150, 10 + 25 * i)
@@ -101,8 +106,12 @@ function start() {
   }
 }
 
-function slaap(){
-  breedte[1].energie+=10
+function slaap() {
+  slapen = 1
+}
+
+function wakker() {
+  slapen = 0
 }
 
 function knopaan() {
@@ -126,9 +135,14 @@ function draw() {
     startKnop.show();
   } else if (scene == 4) {
     image(foto[5].slaapkamer, 0, 0, 600, 600)
+    slaapknop.show();
   }
   if (scene != 3) {
     startKnop.hide();
+  }
+  if (scene != 4) {
+    slaapknop.hide();
+    wakkerknop.hide();
   }
   //de bars voor honger energie geluk en gezondheid
   if (frameCount % 30 == 0 && breedte[0].honger >= 1 && breedte[1].energie >= 1 && breedte[2].geluk >= 1 && breedte[3].gezondheid >= 1) {
@@ -139,20 +153,20 @@ function draw() {
   }
   if (breedte[0].honger <= 0 || breedte[1].energie <= 0 || breedte[2].geluk <= 0 || breedte[3].gezondheid <= 0) {
     leven = 1
-  }else {
+  } else {
     leven = 0
   }
   //de bars en de ui
   fill(100)
   rect(500, 0, 300, 600)
   fill(85, 66, 24)
-  bar(550, 100, breedte[0].honger, 50)
+  rect(550, 100, breedte[0].honger, 50)
   fill("yellow")
-  bar(550, 170, breedte[1].energie, 50)
+  rect(550, 170, breedte[1].energie, 50)
   fill("green")
-  bar(550, 240, breedte[2].geluk, 50)
+  rect(550, 240, breedte[2].geluk, 50)
   fill("red")
-  bar(550, 310, breedte[3].gezondheid, 50)
+  rect(550, 310, breedte[3].gezondheid, 50)
   fill(0)
   text("honger", 550, 95)
   text("energie", 550, 165)
@@ -181,7 +195,7 @@ function draw() {
       kamerKnop[i].hide();
     }
   }
-  if (leven == 0) {
+  if (leven == 0 && slapen == 0) {
     if (mouseX >= x + 50) {
       x++
     }
@@ -221,12 +235,41 @@ function draw() {
       if (xRandom.length <= 0) {
         text("done", 10, 10)
         breedte[2].geluk + 50
+        geld = +50
       }
     }
 
   }
+
+  text("€" + geld, 570, 25)
+
+  // zorgt er voor dat de fis niet beweegt tijdens het slapen
+  if (slapen == 1) {
+    fill(120, 120, 120, 150)
+    rect(0, 0, 500, 600)
+    breedte[1].energie += 1
+  }
+
+  if (breedte[1].energie >= 200) {
+    breedte[1].energie = 200
+  }
+  // zorgt er voor dat de slaapknop verdwijnt 
+  if (scene == 4) {
+    if (slapen == 0) {
+      slaapknop.show();
+      wakkerknop.hide();
+    } else {
+      slaapknop.hide();
+      wakkerknop.show();
+    }
+  }
+
+  if (scene == 2 && x >= 120 && x <=230){
+breedte[3].gezondheid+=50
+  }
+  if (breedte[3].gezondheid >= 200) {
+    breedte[3].gezondheid = 200
+  }
+    
 }
 
-function bar(x, y, breedte, hoogte) {
-  rect(x, y, breedte, hoogte)
-}
