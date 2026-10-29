@@ -43,6 +43,16 @@ function preload() {
 
 function setup() {
   createCanvas(800, 600);
+  
+ if (getItem("breedte")==null)
+  {
+    breedte = breedte;
+  }
+  else
+  {
+    breedte = getItem("breedte");
+  }
+
   myInput = createInput();
   myInput.position(557, 50);
 
@@ -148,6 +158,7 @@ function mouseDragged() {
 
 function draw() {
   background(100);
+   storeItem("breedte",breedte);
   // zorgt voor de verandering van achtergrond en de game knop te maken
   if (scene == 0) {
     image(foto[2].woonkamer, 0, 0, 600, 600);
@@ -170,8 +181,8 @@ function draw() {
   }
   //de bars voor honger energie geluk en gezondheid
   if (frameCount % 30 == 0 && breedte[0].honger >= 1 && breedte[1].energie >= 1 && breedte[2].geluk >= 1 && breedte[3].gezondheid >= 1) {
-    breedte[0].honger = breedte[0].honger - 1
-    breedte[1].energie = breedte[1].energie - 2
+    breedte[0].honger = breedte[0].honger - 0.7
+    breedte[1].energie = breedte[1].energie - 0.3
     breedte[2].geluk = breedte[2.].geluk - 0.5
     breedte[3].gezondheid = breedte[3].gezondheid - 0.4
   }
@@ -278,7 +289,8 @@ function draw() {
       if (xRandom.length <= 0) {
         text("done", 10, 10)
         breedte[2].geluk + 50
-        geld = +50
+        geld +=50
+        breedte[2].geluk+=50
       }
     }
 
@@ -318,5 +330,12 @@ function draw() {
   steakKnop.hide();
  }
 
+if (breedte[0].honger >= 200) {
+    breedte[0].honger = 200
+  }
+  
+  if (breedte[2].geluk >= 200) {
+    breedte[2].geluk = 200
+  }
 }
 
