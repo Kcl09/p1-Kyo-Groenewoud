@@ -6,8 +6,11 @@ let breedte = [
 ];
 let x = 50;
 let y = 400;
-let geld = 0;
+let geld = 25;
 let leven = 0;
+let xEten = 20;
+let yEten = 20;
+let steak = 0;
 let foto = [
   { fish: 0 },
   { fishandchips: 0 },
@@ -15,6 +18,7 @@ let foto = [
   { winkel: 0 },
   { badkamer: 0 },
   { slaapkamer: 0 },
+  { steak: 0 },
 ]
 let laatRectZien = 0;
 let kamerFunctie = [woonkamer, winkel, badkamer, minigame1, slaapkamer];
@@ -34,6 +38,7 @@ function preload() {
   foto[3].winkel = loadImage("winkel.jpg")
   foto[4].badkamer = loadImage('badkamer.jpg')
   foto[5].slaapkamer = loadImage('slaapkamer.jpg')
+  foto[6].steak = loadImage('steak.png')
 }
 
 function setup() {
@@ -69,6 +74,11 @@ function setup() {
   wakkerknop.style("font-size", "40px")
   wakkerknop.position(357, 500)
   wakkerknop.hide();
+
+  steakKnop = createButton("buy for €25")
+  steakKnop.mousePressed(steakBuy);
+  steakKnop.position(50,120)
+  steakKnop.hide();
   for (let i = 0; i < 5; i++) {
     let selectieKnop = createButton(kamers[i])
     selectieKnop.position(150, 10 + 25 * i)
@@ -106,6 +116,13 @@ function start() {
   }
 }
 
+function steakBuy(){
+  if ( geld>=25){
+    geld-=25
+  steak++
+  }
+}
+
 function slaap() {
   slapen = 1
 }
@@ -120,6 +137,13 @@ function knopaan() {
 
 function knopuit() {
   laatRectZien = - 1
+}
+
+function mouseDragged() {
+  if (steak >= 1 && scene == 1 && mouseX <= 500) {
+    xEten = mouseX - 50;
+    yEten = mouseY - 50;
+  }
 }
 
 function draw() {
@@ -156,6 +180,25 @@ function draw() {
   } else {
     leven = 0
   }
+
+  // winkel code
+  if (scene == 1) {
+    steakKnop.show();
+    fill(0)
+    rect(0, 0, 500, 300);
+    fill(255)
+    text("steak:" + steak, 50, 110);
+    text("buy for €25", 50, 130);
+    image(foto[6].steak, xEten, yEten, 100, 100);
+
+    if (xEten >= x && xEten < x + 100 && yEten >= y && yEten < y + 100 && steak >= 1) {
+      xEten = 20
+      yEten = 20
+      steak -= 1
+      breedte[0].honger += 50
+    }
+  }
+
   //de bars en de ui
   fill(100)
   rect(500, 0, 300, 600)
@@ -241,6 +284,7 @@ function draw() {
 
   }
 
+  fill(0)
   text("€" + geld, 570, 25)
 
   // zorgt er voor dat de fis niet beweegt tijdens het slapen
@@ -264,12 +308,15 @@ function draw() {
     }
   }
 
-  if (scene == 2 && x >= 120 && x <=230){
-breedte[3].gezondheid+=50
+  if (scene == 2 && x >= 120 && x <= 230) {
+    breedte[3].gezondheid += 50
   }
   if (breedte[3].gezondheid >= 200) {
     breedte[3].gezondheid = 200
   }
-    
+ if (scene!=1 ){
+  steakKnop.hide();
+ }
+
 }
 
