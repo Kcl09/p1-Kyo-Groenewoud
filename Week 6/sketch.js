@@ -4,8 +4,10 @@ let breedte = [
   { geluk: 200 },
   { gezondheid: 200 },
 ];
+let visNaam = "mijn Vis"
 let x = 50;
 let y = 400;
+let fishDikte = 100;
 let geld = 25;
 let leven = 0;
 let xEten = 20;
@@ -19,6 +21,7 @@ let foto = [
   { badkamer: 0 },
   { slaapkamer: 0 },
   { steak: 0 },
+  { fishhat : 0}
 ]
 let knoppen = [
   {naamKnop : "menu",
@@ -37,7 +40,7 @@ let knoppen = [
   },
   {naamKnop : "start",
     plekX : 557,
-    plekY : 430,
+    plekY : 460,
     function : start,
     show : 0,
     size : 16,
@@ -61,7 +64,28 @@ let knoppen = [
     plekY : 120,
     function : steakBuy,
     show : 0,
-    size : 40,
+    size : 16,
+  },
+  {naamKnop : "help",
+    plekX : 557,
+    plekY : 430,
+    function : help,
+    show : 1,
+    size : 16,
+  },
+  {naamKnop : "close",
+    plekX : 557,
+    plekY : 430,
+    function : helpUit,
+    show : 1,
+    size : 16,
+  },
+  {naamKnop : "reset",
+    plekX : 427,
+    plekY : 120,
+    function : reset,
+    show : 0,
+    size : 16,
   },
 ]
 let gemaakteknoppen = [];
@@ -77,6 +101,7 @@ let xRandom = [];
 let yRandom = [];
 let startGame = 0;
 let slapen = 0;
+let helpText = 0;
 function preload() {
   foto[0].fish = loadImage("fishwithshoes.png");
   foto[1].fishandchips = loadImage("fishandchipstwee.png")
@@ -85,6 +110,7 @@ function preload() {
   foto[4].badkamer = loadImage('badkamer.jpg')
   foto[5].slaapkamer = loadImage('slaapkamer.jpg')
   foto[6].steak = loadImage('steak.png')
+  foto[7].fishhat =loadImage('fishwithshoesandhat.png')
 }
 
 function setup() {
@@ -93,6 +119,15 @@ function setup() {
  if (getItem("breedte")==null) { breedte = breedte;}
   else { breedte = getItem("breedte");}
 
+let opgeslagenSteak = getItem("steak");
+  if (opgeslagenSteak !== null && opgeslagenSteak !== undefined && !isNaN(opgeslagenSteak)) {
+    steak = int(opgeslagenSteak); // int() zorgt ervoor dat het een echt getal is!
+  } else {
+    steak = 0;
+    storeItem("steak", 0);
+  }
+
+
 let opgeslagenGeld = getItem("geld");
   if (opgeslagenGeld !== null && opgeslagenGeld !== undefined && !isNaN(opgeslagenGeld)) {
     geld = opgeslagenGeld;
@@ -100,45 +135,6 @@ let opgeslagenGeld = getItem("geld");
     geld = 25;
     storeItem("geld", 25);
   }
-
-  myInput = createInput();
-  myInput.position(557, 50);
-  //myInput.hide();
-
-  knopAan = createButton('menu');
-  knopAan.position(557, 400);
-  knopAan.mousePressed(knopaan);
-  knopAan.show();
-
-  knopUit = createButton('close');
-  knopUit.position(557, 400);
-  knopUit.mousePressed(knopuit);
-  knopUit.hide();
-
-  startKnop = createButton("start");
-  startKnop.mousePressed(start);
-  startKnop.position(557, 430)
-  startKnop.hide();
-
-  slaapknop = createButton("slaap");
-  slaapknop.mousePressed(slaap);
-  slaapknop.hide();
-  slaapknop.style("font-size", "40px")
-  slaapknop.position(357, 500)
-
-  wakkerknop = createButton("wakker");
-  wakkerknop.mousePressed(wakker);
-  wakkerknop.style("font-size", "40px")
-  wakkerknop.position(357, 500)
-  wakkerknop.hide();
-
-  steakKnop = createButton("buy for €25")
-  steakKnop.mousePressed(steakBuy);
-  steakKnop.position(50,120)
-  steakKnop.hide();
-
-  resetknop =  createButton("reset")
-  resetknop.mousePressed(reset)
 
 for ( let i =0 ; i < knoppen.length; i++){
   let buttons = createButton(knoppen[i].naamKnop)
@@ -156,10 +152,22 @@ gemaakteknoppen.push(buttons)
 
   for (let i = 0; i < 5; i++) {
     let selectieKnop = createButton(kamers[i])
-    selectieKnop.position(150, 10 + 25 * i)
+    selectieKnop.position(395, 390 + 25 * i)
     kamerKnop.push(selectieKnop)
     selectieKnop.mousePressed(kamerFunctie[i])
   }
+
+  if (getItem("visNaam") !== null) {
+    visNaam = getItem("visNaam");
+  }
+
+  myInput = createInput(visNaam); 
+  myInput.position(557, 50);
+
+  //opslaknop
+  naamKnop = createButton("Opslaan");
+  naamKnop.position(715, 50); 
+  naamKnop.mousePressed(slaNaamOp);
 }
 
 
@@ -218,13 +226,19 @@ function knopuit() {
 }
 
 function reset(){
-  breedte[0].honger = 200
+  breedte[0].honger = 150
   breedte[1].energie = 200
   breedte[2].geluk = 200
   breedte[3].gezondheid = 200
   geld = 25
 }
 
+function help(){
+helpText=1
+}
+function helpUit(){
+  helpText=0
+}
 function mouseDragged() {
   if (steak >= 1 && scene == 1 && mouseX <= 500) {
     xEten = mouseX - 50;
@@ -232,10 +246,16 @@ function mouseDragged() {
   }
 }
 
+function slaNaamOp() {
+  visNaam = myInput.value(); 
+  storeItem("visNaam", visNaam);
+}
+
 function draw() {
   background(100);
    storeItem("breedte",breedte);
    storeItem("geld",geld);
+   storeItem("steak",steak)
   // zorgt voor de verandering van achtergrond en de game knop te maken
   if (scene == 0) {
     image(foto[2].woonkamer, 0, 0, 600, 600);
@@ -244,48 +264,29 @@ function draw() {
   } else if (scene == 2) {
     image(foto[4].badkamer, 0, 0, 600, 600)
   } else if (scene == 3) {
-    startKnop.show();
+    gemaakteknoppen[2].show();
   } else if (scene == 4) {
     image(foto[5].slaapkamer, 0, 0, 600, 600)
-    slaapknop.show();
+    gemaakteknoppen[3].show();
   }
   if (scene != 3) {
-    startKnop.hide();
+    gemaakteknoppen[2].hide();
   }
   if (scene != 4) {
-    slaapknop.hide();
-    wakkerknop.hide();
+    gemaakteknoppen[3].hide();
+    gemaakteknoppen[4].hide();
   }
   //de bars voor honger energie geluk en gezondheid
  if (frameCount % 30 == 0) {
-  if (breedte[0].honger > 0) {breedte[0].honger -= 0.1;}
+  if (breedte[0].honger > 0) {breedte[0].honger -= 0.4;}
   if (breedte[1].energie > 0) {breedte[1].energie -= 0.2;}
   if (breedte[2].geluk > 0) {breedte[2].geluk -= 0.3;}
-  if (breedte[3].gezondheid > 0) {breedte[3].gezondheid -= 0.4;}
+  if (breedte[3].gezondheid > 0) {breedte[3].gezondheid -= 0.25;}
 }
   if (breedte[0].honger <= 0 && breedte[1].energie <= 0 && breedte[2].geluk <= 0 && breedte[3].gezondheid <= 0) {
     leven = 1
   } else {
     leven = 0
-  }
-
-  // winkel code
-  if (scene == 1) {
-    steakKnop.show();
-    fill(0)
-    rect(0, 0, 500, 300);
-    fill(255)
-    text("steak:" + steak, 50, 110);
-    text("buy for €25", 50, 130);
-    image(foto[6].steak, xEten, yEten, 100, 100);
-
-    if (xEten >= x && xEten < x + 100 && yEten >= y && yEten < y + 100 && steak >= 1) {
-      xEten = 20
-      yEten = 20
-      steak -= 1
-      breedte[0].honger += 50
-      breedte[1].energie+= 20
-    }
   }
 
   //de bars en de ui
@@ -304,21 +305,22 @@ function draw() {
   text("energie", 550, 165)
   text("geluk", 550, 235)
   text("gezondheid", 550, 305)
-  // zorgt er voor dat de vis dood kan 
+  // zorgt er voor dat de vis dood kan en de naam boven zijn hooft
   if (leven == 0) {
-    image(foto[0].fish, x, y, 100, 100);
+    
+    fill(255);
+    textSize(14);
+    textAlign(CENTER);
+    text(visNaam, x + (fishDikte / 2), y - 15);
+    textAlign(LEFT); 
+if (breedte[3].geluk >= 150){
+
+}
+    image(foto[0].fish, x, y, fishDikte, 100);
   } else if (leven == 1) {
-    image(foto[1].fishandchips, x, y, 100, 100)
+    image(foto[1].fishandchips, x, y, fishDikte, 100);
   }
-  //zorgt dat de menu knop werkt
-  if (laatRectZien == 1) {
-    rect(100, 0, 300)
-    knopUit.show();
-    knopAan.hide();
-  } else {
-    knopUit.hide();
-    knopAan.show();
-  }
+
   // laat de vis achter de muis aan lopen 
   for (let i = 0; i < 5; i++) {
     if (laatRectZien == 1) {
@@ -343,7 +345,7 @@ function draw() {
   }
   //code van de minigame 
   if (startGame == 1 && leven == 0 && scene == 3) {
-    image(foto[0].fish, x, y, 100, 100)
+    image(foto[0].fish, x, y, fishDikte, 100)
     if (keyIsDown(LEFT_ARROW) === true) {
       x -= 5;
     }
@@ -379,7 +381,24 @@ function draw() {
     }
 
   }
+  // winkel code
+  if (scene == 1) {
+    gemaakteknoppen[5].show();
+    fill(0)
+    rect(0, 0, 150, 150);
+    fill(255)
+    text("steak:" + steak, 50, 110);
+    text("buy for €25", 50, 130);
+    image(foto[6].steak, xEten, yEten, 100, 100);
 
+    if (xEten >= x && xEten < x + 100 && yEten >= y && yEten < y + 100 && steak >= 1) {
+      xEten = 20
+      yEten = 20
+      steak -= 1
+      breedte[0].honger += 50
+      breedte[1].energie+= 20
+    }
+  }
   fill(0)
   text("€" + geld, 570, 25)
 
@@ -394,11 +413,11 @@ function draw() {
   // zorgt er voor dat de slaapknop verdwijnt 
   if (scene == 4) {
     if (slapen == 0) {
-      slaapknop.show();
-      wakkerknop.hide();
+      gemaakteknoppen[3].show();
+      gemaakteknoppen[4].hide();
     } else {
-      slaapknop.hide();
-      wakkerknop.show();
+      gemaakteknoppen[3].hide();
+      gemaakteknoppen[4].show();
     }
   }
 
@@ -407,7 +426,7 @@ function draw() {
   }
  
  if (scene!=1 ){
-  steakKnop.hide();
+  gemaakteknoppen[5].hide();
  }
 
 //stopt de bars van hoger dan 200 te gaan
@@ -427,8 +446,53 @@ if (breedte[0].honger >= 200) {
    if (breedte[3].gezondheid >= 200) {
     breedte[3].gezondheid = 200
   }
-  let naam = myInput.value();
 
-  text(naam,550,50)
+  //zorgt dat de menu knop werkt
+  if (laatRectZien == 1) {
+    fill(200)
+    rect(380, 370, 120,150)
+    gemaakteknoppen[1].show();
+    gemaakteknoppen[0].hide();
+  } else {
+    gemaakteknoppen[1].hide();
+    gemaakteknoppen[0].show();
+  }
+//
+  //zorgt voor help knop te laten zien en te laten verdwijnen
+  if (helpText == 1) {
+    fill(200)
+    rect(0, 0, 500,250)
+    fill(0)
+    text("Hoi, welkom op de help page.",10,30)
+    text("De bedoeling is om de vis met schoenen in leven te houden.",10,50)
+    text("Je kan hem eten geven, douchen, een minigame laten spelen en het naar bed laten gaan.",10,70)
+    text("De bedoeling van de minigame is dat je alle punten op pakt. ",10,90)
+    text("De minigame kan je controllen met de arrow keys.",10,110)
+    text("Stel de vis gaat dood kun je hem hier met de reset knop resetten. ",10,130)
+    text("Om de gezondheid omhoog te krijgen moet je de vis onder de douche doen.",10,150)
+    text("Je kan de naam van de vis veranderen rechts boven in het scherm.",10,170)
+    gemaakteknoppen[8].show();
+    gemaakteknoppen[7].show();
+    gemaakteknoppen[6].hide();
+  } else {
+    gemaakteknoppen[7].hide();
+    gemaakteknoppen[6].show();
+    gemaakteknoppen[8].hide();  
+  }
+// maakt de vis dik
+
+if (breedte[0].honger >= 150 && fishDikte < 200) {
+  fishDikte++;
+} else if (breedte[0].honger < 150 && breedte[0].honger > 50) {
+  if (fishDikte > 100) {
+    fishDikte--; 
+  } else if (fishDikte < 100) {
+    fishDikte++; 
+  }
+} else if (breedte[0].honger <= 50 && fishDikte > 50) {
+  fishDikte--;
+}
+
+
 }
 
