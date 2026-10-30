@@ -20,6 +20,51 @@ let foto = [
   { slaapkamer: 0 },
   { steak: 0 },
 ]
+let knoppen = [
+  {naamKnop : "menu",
+    plekX : 557,
+    plekY : 400,
+    function : knopaan,
+    show : 1,
+    size : 16,
+  },
+  {naamKnop : "close",
+    plekX : 557,
+    plekY : 400,
+    function : knopuit,
+    show : 0,
+    size : 16,
+  },
+  {naamKnop : "start",
+    plekX : 557,
+    plekY : 430,
+    function : start,
+    show : 0,
+    size : 16,
+  },
+  {naamKnop : "slaap",
+    plekX : 357,
+    plekY : 500,
+    function : slaap,
+    show : 0,
+    size : 40,
+  },
+  {naamKnop : "wakker",
+    plekX : 357,
+    plekY : 500,
+    function : wakker,
+    show : 0,
+    size : 40,
+  },
+  {naamKnop : "buy for €25",
+    plekX : 50,
+    plekY : 120,
+    function : steakBuy,
+    show : 0,
+    size : 40,
+  },
+]
+let gemaakteknoppen = [];
 let laatRectZien = 0;
 let kamerFunctie = [woonkamer, winkel, badkamer, minigame1, slaapkamer];
 let kamers = ["woonkamer", "winkel", "badkamer", "minigame1", "slaapkamer"]
@@ -27,13 +72,14 @@ let kamerKnop = [];
 let scene = 0;
 let xMinigame = 0;
 let yMinigame = 0;
+let minigameKlaar= 0;
 let xRandom = [];
 let yRandom = [];
 let startGame = 0;
 let slapen = 0;
 function preload() {
   foto[0].fish = loadImage("fishwithshoes.png");
-  foto[1].fishandchips = loadImage("fishandchips.png")
+  foto[1].fishandchips = loadImage("fishandchipstwee.png")
   foto[2].woonkamer = loadImage("woonkamer.png")
   foto[3].winkel = loadImage("winkel.jpg")
   foto[4].badkamer = loadImage('badkamer.jpg')
@@ -43,28 +89,29 @@ function preload() {
 
 function setup() {
   createCanvas(800, 600);
-  
- if (getItem("breedte")==null)
-  {
-    breedte = breedte;
-  }
-  else
-  {
-    breedte = getItem("breedte");
+
+ if (getItem("breedte")==null) { breedte = breedte;}
+  else { breedte = getItem("breedte");}
+
+let opgeslagenGeld = getItem("geld");
+  if (opgeslagenGeld !== null && opgeslagenGeld !== undefined && !isNaN(opgeslagenGeld)) {
+    geld = opgeslagenGeld;
+  } else {
+    geld = 25;
+    storeItem("geld", 25);
   }
 
   myInput = createInput();
   myInput.position(557, 50);
+  //myInput.hide();
 
   knopAan = createButton('menu');
   knopAan.position(557, 400);
-  knopAan.style('background-color', '#ffffff');
   knopAan.mousePressed(knopaan);
   knopAan.show();
 
   knopUit = createButton('close');
   knopUit.position(557, 400);
-  knopUit.style('background-color', '#ffffff');
   knopUit.mousePressed(knopuit);
   knopUit.hide();
 
@@ -89,6 +136,24 @@ function setup() {
   steakKnop.mousePressed(steakBuy);
   steakKnop.position(50,120)
   steakKnop.hide();
+
+  resetknop =  createButton("reset")
+  resetknop.mousePressed(reset)
+
+for ( let i =0 ; i < knoppen.length; i++){
+  let buttons = createButton(knoppen[i].naamKnop)
+  buttons.position(knoppen[i].plekX,knoppen[i].plekY)
+  buttons.mousePressed(knoppen[i].function)
+ buttons.style("font-size",knoppen[i].size + "px")
+ 
+if (knoppen[i].show === 0) {
+    buttons.hide();
+  } else {
+    buttons.show();
+  }
+gemaakteknoppen.push(buttons)
+}
+
   for (let i = 0; i < 5; i++) {
     let selectieKnop = createButton(kamers[i])
     selectieKnop.position(150, 10 + 25 * i)
@@ -119,7 +184,10 @@ function slaapkamer() {
 }
 
 function start() {
-  startGame = 1
+  startGame = 1;
+  minigameKlaar = 0;
+  xRandom = [];
+  yRandom = [];
   for (let i = 0; i < 100; i++) {
     xRandom.push(int(random(0, 500)))
     yRandom.push(int(random(0, 600)))
@@ -149,6 +217,14 @@ function knopuit() {
   laatRectZien = - 1
 }
 
+function reset(){
+  breedte[0].honger = 200
+  breedte[1].energie = 200
+  breedte[2].geluk = 200
+  breedte[3].gezondheid = 200
+  geld = 25
+}
+
 function mouseDragged() {
   if (steak >= 1 && scene == 1 && mouseX <= 500) {
     xEten = mouseX - 50;
@@ -159,6 +235,7 @@ function mouseDragged() {
 function draw() {
   background(100);
    storeItem("breedte",breedte);
+   storeItem("geld",geld);
   // zorgt voor de verandering van achtergrond en de game knop te maken
   if (scene == 0) {
     image(foto[2].woonkamer, 0, 0, 600, 600);
@@ -180,13 +257,13 @@ function draw() {
     wakkerknop.hide();
   }
   //de bars voor honger energie geluk en gezondheid
-  if (frameCount % 30 == 0 && breedte[0].honger >= 1 && breedte[1].energie >= 1 && breedte[2].geluk >= 1 && breedte[3].gezondheid >= 1) {
-    breedte[0].honger = breedte[0].honger - 0.7
-    breedte[1].energie = breedte[1].energie - 0.3
-    breedte[2].geluk = breedte[2.].geluk - 0.5
-    breedte[3].gezondheid = breedte[3].gezondheid - 0.4
-  }
-  if (breedte[0].honger <= 0 || breedte[1].energie <= 0 || breedte[2].geluk <= 0 || breedte[3].gezondheid <= 0) {
+ if (frameCount % 30 == 0) {
+  if (breedte[0].honger > 0) {breedte[0].honger -= 0.1;}
+  if (breedte[1].energie > 0) {breedte[1].energie -= 0.2;}
+  if (breedte[2].geluk > 0) {breedte[2].geluk -= 0.3;}
+  if (breedte[3].gezondheid > 0) {breedte[3].gezondheid -= 0.4;}
+}
+  if (breedte[0].honger <= 0 && breedte[1].energie <= 0 && breedte[2].geluk <= 0 && breedte[3].gezondheid <= 0) {
     leven = 1
   } else {
     leven = 0
@@ -207,6 +284,7 @@ function draw() {
       yEten = 20
       steak -= 1
       breedte[0].honger += 50
+      breedte[1].energie+= 20
     }
   }
 
@@ -288,9 +366,15 @@ function draw() {
       }
       if (xRandom.length <= 0) {
         text("done", 10, 10)
-        breedte[2].geluk + 50
-        geld +=50
-        breedte[2].geluk+=50
+      
+
+        if (minigameKlaar == 0){
+        breedte[2].geluk + 50;
+        geld +=50;
+        breedte[2].geluk+=50;
+        breedte[1].energie-=20;
+        minigameKlaar = 1;
+        }
       }
     }
 
@@ -306,9 +390,7 @@ function draw() {
     breedte[1].energie += 1
   }
 
-  if (breedte[1].energie >= 200) {
-    breedte[1].energie = 200
-  }
+
   // zorgt er voor dat de slaapknop verdwijnt 
   if (scene == 4) {
     if (slapen == 0) {
@@ -323,19 +405,30 @@ function draw() {
   if (scene == 2 && x >= 120 && x <= 230) {
     breedte[3].gezondheid += 50
   }
-  if (breedte[3].gezondheid >= 200) {
-    breedte[3].gezondheid = 200
-  }
+ 
  if (scene!=1 ){
   steakKnop.hide();
  }
+
+//stopt de bars van hoger dan 200 te gaan
 
 if (breedte[0].honger >= 200) {
     breedte[0].honger = 200
   }
   
+  if (breedte[1].energie >= 200) {
+    breedte[1].energie = 200
+  }
+
   if (breedte[2].geluk >= 200) {
     breedte[2].geluk = 200
   }
+
+   if (breedte[3].gezondheid >= 200) {
+    breedte[3].gezondheid = 200
+  }
+  let naam = myInput.value();
+
+  text(naam,550,50)
 }
 
